@@ -534,6 +534,7 @@ iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
 iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
 iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
 iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
+iglua.luatableTooltipInputText = makeWrapTooltip(iglua.luatableInputText)
 
 return setmetatable(iglua, {
 	__index = ig,
