@@ -369,7 +369,7 @@ local function makeWrapTooltip(f)
 end
 
 -- if you want tooltip wrappers for raw C data calls (tho admittadly I don't use this so often)
-iglua.tooltipSlider = makeWrapTooltip(iglua.igSliderFloat)
+iglua.tooltipSliderFloat = makeWrapTooltip(iglua.igSliderFloat)
 iglua.tooltipCombo = makeWrapTooltip(iglua.igCombo)
 iglua.tooltipInputFloat = makeWrapTooltip(iglua.igInputFloat)
 iglua.tooltipInputInt = makeWrapTooltip(iglua.igInputInt)
@@ -431,6 +431,28 @@ local function makeTableAccess(args)
 	end
 end
 
+-- atypical luatableInputText / igInputText since it uses a string, and passes the string size
+local function makeTableAccessString(args)
+	local func = assert(args.func)
+	local buf = ffi.new'char[256]'
+	return function(title, t, k, ...)
+		local src = tostring(t[k])
+		local len = #src
+		while len >= ffi.sizeof(buf) do
+			local newbuf = ffi.new('char[?]', ffi.sizeof(buf) * 2)
+			ffi.copy(newbuf, buf, ffi.sizeof(buf))
+			buf = newbuf
+		end
+		ffi.copy(buf, src, len)
+		buf[len] = 0
+		local result = table.pack(func(title, buf, ffi.sizeof(buf), ...))
+		if result[1] then
+			t[k] = ffi.string(buf, math.min(ffi.sizeof(buf), tonumber(ffi.C.strlen(buf))))
+		end
+		return result:unpack()
+	end
+end
+
 -- this is table wrap only, no tooltip
 iglua.luatableBegin = makeTableAccess{
 	ctype = 'bool',
@@ -454,11 +476,27 @@ iglua.luatableSliderInt = makeTableAccess{
 	func = iglua.igSliderInt,
 }
 
+--[[ this uses the imgui string-to-float
 iglua.luatableInputFloat = makeTableAccess{
 	ctype = 'float',
 	func = iglua.igInputFloat,
 	castto = tonumber,
 }
+--]]
+-- [[ this uses lua's string-to-float
+-- but is it giving me false-positive returns?
+function iglua.luatableInputFloat(title, t, k, ...)
+	local tmp = {value = tostring(t[k])}
+	if table.pack(iglua.luatableInputText(title, tmp, 'value', ...)) then
+		local v = tonumber(tmp.value)
+		if v then
+			t[k] = v
+			return true
+		end
+	end
+	return false
+end 
+--]]
 
 iglua.luatableInputInt = makeTableAccess{
 	ctype = 'int',
@@ -498,28 +536,6 @@ do
 	end
 end
 
--- TODO atypical luatableInputText / igInputText since it uses a string, and passes the string size
-local function makeTableAccessString(args)
-	local func = assert(args.func)
-	local buf = ffi.new'char[256]'
-	return function(title, t, k, ...)
-		local src = tostring(t[k])
-		local len = #src
-		while len >= ffi.sizeof(buf) do
-			local newbuf = ffi.new('char[?]', ffi.sizeof(buf) * 2)
-			ffi.copy(newbuf, buf, ffi.sizeof(buf))
-			buf = newbuf
-		end
-		ffi.copy(buf, src, len)
-		buf[len] = 0
-		local result = table.pack(func(title, buf, ffi.sizeof(buf), ...))
-		if result[1] then
-			t[k] = ffi.string(buf, math.min(ffi.sizeof(buf), tonumber(ffi.C.strlen(buf))))
-		end
-		return result:unpack()
-	end
-end
-
 iglua.luatableInputText = makeTableAccessString{
 	func = iglua.igInputText,
 }
@@ -531,6 +547,7 @@ iglua.luatableInputTextMultiline = makeTableAccessString{
 -- this is tooltip wrap + table wrap
 iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
 iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
+iglua.luatableTooltipInputInt = makeWrapTooltip(iglua.luatableInputInt)
 iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
 iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
 iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
