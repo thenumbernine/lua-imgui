@@ -1,6 +1,10 @@
-I have wrote lua-to-C interop stuff enough for my cimgui bindings that I think I'll put it here.
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KYWUWS86GSFGL)
 
-It used to reside in my lua-ffi-bindings project, but I'm turning that more and more into code generated from my preproc-lua project.
+## LuaJIT C-ImGui Wrapper
+
+This holds some C++-overloaded-operator API wrappers of the cimgui LuaJIT function calls.
+It also holds some lua-table-to-C-pointer wrappers.
+And for kicks it has some wrappers for showing the text as a hover label instead of next to the widget.
 
 Dependencies:
 - [lua-ext](https://github.com/thenumbernine/lua-ext)
