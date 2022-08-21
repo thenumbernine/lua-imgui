@@ -356,7 +356,9 @@ end
 
 local function makeWrapTooltip(f)
 	assert(f, "expected function")
+	-- TODO maybe, assert the first is a ptr, and if not allowNull then assert the ptr is not null
 	return function(name, ...)
+		--assert(ptr, "forgot to pass a ptr for "..name)
 		ig.igPushID_Str(name)
 		local result = f('', ...)
 		hoverTooltip(name)
@@ -374,7 +376,7 @@ iglua.tooltipInputInt = makeWrapTooltip(iglua.igInputInt)
 iglua.tooltipInputText = makeWrapTooltip(iglua.igInputText)
 iglua.tooltipButton = makeWrapTooltip(iglua.igButton)
 iglua.tooltipCheckbox = makeWrapTooltip(ig.igCheckbox)
-
+iglua.tooltipRadioButton = makeWrapTooltip(ig.igRadioButton_IntPtr)	-- TODO instead of _IntPtr, replace with iglua.igRadioButton and do type detect
 
 local function tooltipLabel(label, str)
 	ig.igPushID_Str(label)
@@ -447,13 +449,24 @@ iglua.luatableSliderFloat = makeTableAccess{
 	func = iglua.igSliderFloat,
 }
 
+iglua.luatableSliderInt = makeTableAccess{
+	ctype = 'int',
+	func = iglua.igSliderInt,
+}
+
 iglua.luatableInputFloat = makeTableAccess{
 	ctype = 'float',
 	func = iglua.igInputFloat,
 	castto = tonumber,
 }
 
-iglua.luatableRadio = makeTableAccess{
+iglua.luatableInputInt = makeTableAccess{
+	ctype = 'int',
+	func = iglua.igInputInt,
+	castto = tonumber,
+}
+
+iglua.luatableRadioButton = makeTableAccess{
 	ctype = 'int',
 	func = ig.igRadioButton_IntPtr,	-- TODO how about a wrapper above for type-determination?
 }
@@ -477,7 +490,7 @@ iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
 iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
 iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
 iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
-iglua.luatableTooltipRadio = makeWrapTooltip(iglua.luatableRadio)
+iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
 
 return setmetatable(iglua, {
 	__index = ig,
