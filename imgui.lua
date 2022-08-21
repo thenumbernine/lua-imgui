@@ -340,30 +340,44 @@ end
 
 
 -- HERE IS THE LUA-WRAPPED TYPES
--- I'M GOING TO SKIP ON THE 'ig' PREFIX FOR THESE
+-- API STANDARD, IF THE ig IS MISSING THEN IT IS A TABLE-BASED NAME
 -- MAYBE I SHOULD DENOTE THEM SOME OTHER WAY
 
-
-
-function iglua.Begin(title, t, k, ...)
-	local flagarg
-	if t then
-		flagarg = tmpbool
-		tmpbool[0] = t[k]
+-- similar to hydro-cl, but hydro-cl has a tooltip
+local function makeTableAccess(ctype, func, allowNull)
+	local ptr = ffi.new(ctype..'[1]')
+	return function(title, t, k, ...)
+		if allowNull then
+			local arg
+			if t then
+				if t[k] == nil then
+					error("failed to find value "..k.." in table "..tostring(t))
+				end
+				ptr[0] = t[k]
+				arg = ptr
+			end
+			local result = table.pack(func(title, arg, ...))
+			if arg then
+				t[k] = ptr[0]
+			end
+			return result:unpack()
+		else
+			if t == nil then
+				error("expected table")
+			end
+			if t[k] == nil then
+				error("failed to find value "..k.." in table "..tostring(t))
+			end
+			ptr[0] = t[k]
+			local result = table.pack(func(title, ptr, ...))
+			t[k] = ptr[0]
+			return result:unpack()
+		end
 	end
-	local result = table.pack(ig.igBegin(title, flagarg, ...))
-	if t then
-		t[k] = not not tmpbool[0]
-	end
-	return result:unpack()
 end
 
-function iglua.SliderFloat(title, t, k, ...)
-	tmpfloat[0] = t[k]
-	local result = table.pack(ig.igSliderFloat(title, tmpfloat, ...))
-	t[k] = tonumber(tmpfloat[0])
-	return result:unpack()
-end
+iglua.Begin = makeTableAccess('bool', ig.igBegin, true)
+iglua.SliderFloat = makeTableAccess('float', iglua.igSliderFloat, false)
 
 return setmetatable(iglua, {
 	__index = ig,
