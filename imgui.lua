@@ -355,6 +355,7 @@ local function hoverTooltip(name)
 end
 
 local function makeWrapTooltip(f)
+	assert(f, "expected function")
 	return function(name, ...)
 		ig.igPushID_Str(name)
 		local result = f('', ...)
@@ -378,6 +379,9 @@ local tooltipWidgets = table.map({
 	return makeWrapTooltip(f), wrapName
 end)
 
+iglua.tooltipButton = tooltipWidgets.button
+iglua.tooltipCheckbox = tooltipWidgets.checkbox
+
 
 local function tooltipLabel(label, str)
 	ig.igPushID_Str(label)
@@ -386,7 +390,21 @@ local function tooltipLabel(label, str)
 	ig.igPopID()
 end
 
-local function makeTableAccess(ctype, func, allowNull)
+local ident = function(...) return ... end
+--[[
+args:
+	ctype = ctype
+	func = callback function
+	allowNull = set to 'true' to have a nil table imply passing null into the callback
+	castto = function for casting to the ctype
+	castfrom = function for casting from the ctype
+--]]
+local function makeTableAccess(args)
+	local ctype = assert(args.ctype, "expected ctype")
+	local func = assert(args.func, "expected func")
+	local allowNull = args.allowNull
+	local castto = args.castto or ident
+	local castfrom = args.castfrom or ident
 	local ptr = ffi.new(ctype..'[1]')
 	return function(title, t, k, ...)
 		if allowNull then
@@ -395,12 +413,12 @@ local function makeTableAccess(ctype, func, allowNull)
 				if t[k] == nil then
 					error("failed to find value "..k.." in table "..tostring(t))
 				end
-				ptr[0] = t[k]
+				ptr[0] = castto(t[k])
 				arg = ptr
 			end
 			local result = table.pack(func(title, arg, ...))
 			if arg then
-				t[k] = ptr[0]
+				t[k] = castfrom(ptr[0])
 			end
 			return result:unpack()
 		else
@@ -410,18 +428,42 @@ local function makeTableAccess(ctype, func, allowNull)
 			if t[k] == nil then
 				error("failed to find value "..k.." in table "..tostring(t))
 			end
-			ptr[0] = t[k]
+			ptr[0] = castto(t[k])
 			local result = table.pack(func(title, ptr, ...))
-			t[k] = ptr[0]
+			t[k] = castfrom(ptr[0])
 			return result:unpack()
 		end
 	end
 end
 
 -- this is table wrap only, no tooltip
-iglua.luatableBegin = makeTableAccess('bool', iglua.igBegin, true)
-iglua.luatableSliderFloat = makeTableAccess('float', iglua.igSliderFloat, false)
-iglua.luatableInputFloat = makeTableAccess('float', iglua.igInputFloat, false)
+iglua.luatableBegin = makeTableAccess{
+	ctype = 'bool',
+	func = iglua.igBegin,
+	allowNull = true,
+}
+
+iglua.luatableCheckbox = makeTableAccess{
+	ctype = 'bool',
+	func = ig.igCheckbox,
+	castto = function(x) return not not x end,
+}
+
+iglua.luatableSliderFloat = makeTableAccess{
+	ctype = 'float',
+	func = iglua.igSliderFloat,
+}
+
+iglua.luatableInputFloat = makeTableAccess{
+	ctype = 'float',
+	func = iglua.igInputFloat,
+	castto = tonumber,
+}
+
+iglua.luatableRadio = makeTableAccess{
+	ctype = 'int',
+	func = ig.igRadioButton_IntPtr,	-- TODO how about a wrapper above for type-determination?
+}
 
 -- this is atypical because I'm 1-offsetting the indexes
 do
@@ -441,6 +483,8 @@ end
 iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
 iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
 iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
+iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
+iglua.luatableTooltipRadio = makeWrapTooltip(iglua.luatableRadio)
 
 return setmetatable(iglua, {
 	__index = ig,
