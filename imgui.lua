@@ -476,14 +476,15 @@ iglua.luatableSliderInt = makeTableAccess{
 	func = iglua.igSliderInt,
 }
 
---[[ this uses the imgui string-to-float
+-- TODO some want A, some want B ...
+-- [[ this uses the imgui string-to-float
 iglua.luatableInputFloat = makeTableAccess{
 	ctype = 'float',
 	func = iglua.igInputFloat,
 	castto = tonumber,
 }
 --]]
--- [[ this uses lua's string-to-float
+--[[ this uses lua's string-to-float
 -- but is it giving me false-positive returns?
 function iglua.luatableInputFloat(title, t, k, ...)
 	local tmp = {value = tostring(t[k])}
