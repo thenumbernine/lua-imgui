@@ -346,13 +346,14 @@ end
 
 
 
-local function hoverTooltip(name)
+function iglua.hoverTooltip(name)
 	if ig.igIsItemHovered(ig.ImGuiHoveredFlags_None) then
 		ig.igBeginTooltip()
 		ig.igText(name)
 		ig.igEndTooltip()
 	end
 end
+
 
 local function makeWrapTooltip(f)
 	assert(f, "expected function")
@@ -361,12 +362,11 @@ local function makeWrapTooltip(f)
 		--assert(ptr, "forgot to pass a ptr for "..name)
 		ig.igPushID_Str(name)
 		local result = f('', ...)
-		hoverTooltip(name)
+		iglua.hoverTooltip(name)
 		ig.igPopID()
 		return result
 	end
 end
-
 
 -- if you want tooltip wrappers for raw C data calls (tho admittadly I don't use this so often)
 iglua.tooltipSlider = makeWrapTooltip(iglua.igSliderFloat)
@@ -381,7 +381,7 @@ iglua.tooltipRadioButton = makeWrapTooltip(ig.igRadioButton_IntPtr)	-- TODO inst
 local function tooltipLabel(label, str)
 	ig.igPushID_Str(label)
 	ig.igText(str)
-	hoverTooltip(label)
+	iglua.hoverTooltip(label)
 	ig.igPopID()
 end
 
@@ -484,6 +484,22 @@ do
 		end
 	end
 end
+
+-- this one is atypical because the ptr is in the 3rd arg instead of the 2nd
+do
+	local bool = ffi.new'bool[1]'
+	function iglua.luatableMenuItem(label, shortcut, t, k, ...)
+		assert(t ~= nil)
+		assert(t[k] ~= nil)
+		bool[0] = t[k]
+		local result = table.pack(iglua.igMenuItem(label, shortcut, bool, ...))
+		t[k] = bool[0]
+		return result:unpack()
+	end
+end
+
+-- TODO atypical igInputText since it uses a string
+
 
 -- this is tooltip wrap + table wrap
 iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
