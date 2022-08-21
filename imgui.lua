@@ -4,6 +4,7 @@ same as the non-C part of my lua-ffi-bindings, same as hydro-cl/hydro/toolkit
 --]]
 local ffi = require 'ffi'
 local ig = require 'ffi.cimgui'
+--local ig = require 'ffi.imgui'
 local table = require 'ext.table'
 
 local tmpbool = ffi.new'bool[1]'
@@ -32,4 +33,6 @@ function iglua.SliderFloat(title, t, k, ...)
 	return result:unpack()
 end
 
-return iglua
+return setmetatable(iglua, {
+	__index = ig,
+})
