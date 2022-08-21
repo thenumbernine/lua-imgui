@@ -7,11 +7,17 @@ local ig = require 'ffi.cimgui'
 --local ig = require 'ffi.imgui'
 local table = require 'ext.table'
 
+-- ig interface but with lua tables
+local iglua = {}
+
+local ImVec2 = ffi.metatype('ImVec2', {})
+iglua.ImVec2 = ImVec2
+local ImVec4 = ffi.metatype('ImVec4', {})
+iglua.ImVec4 = ImVec4 
+
 local tmpbool = ffi.new'bool[1]'
 local tmpfloat = ffi.new'float[1]'
 
--- ig interface but with lua tables
-local iglua = {}
 
 function iglua.Begin(title, t, k, ...)
 	local flagarg
