@@ -366,21 +366,14 @@ local function makeWrapTooltip(f)
 end
 
 
--- this is just tooltip wrapper, not Lua table wrapper
-local tooltipWidgets = table.map({
-	slider = iglua.igSliderFloat,
-	combo = iglua.igCombo,
-	button = iglua.igButton,
-	float = iglua.igInputFloat,
-	int = iglua.igInputInt,
-	checkbox = iglua.igCheckbox,
-	text = iglua.igInputText,
-}, function(f, wrapName)
-	return makeWrapTooltip(f), wrapName
-end)
-
-iglua.tooltipButton = tooltipWidgets.button
-iglua.tooltipCheckbox = tooltipWidgets.checkbox
+-- if you want tooltip wrappers for raw C data calls (tho admittadly I don't use this so often)
+iglua.tooltipSlider = makeWrapTooltip(iglua.igSliderFloat)
+iglua.tooltipCombo = makeWrapTooltip(iglua.igCombo)
+iglua.tooltipInputFloat = makeWrapTooltip(iglua.igInputFloat)
+iglua.tooltipInputInt = makeWrapTooltip(iglua.igInputInt)
+iglua.tooltipInputText = makeWrapTooltip(iglua.igInputText)
+iglua.tooltipButton = makeWrapTooltip(iglua.igButton)
+iglua.tooltipCheckbox = makeWrapTooltip(ig.igCheckbox)
 
 
 local function tooltipLabel(label, str)
