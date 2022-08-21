@@ -378,7 +378,7 @@ iglua.tooltipButton = makeWrapTooltip(iglua.igButton)
 iglua.tooltipCheckbox = makeWrapTooltip(ig.igCheckbox)
 iglua.tooltipRadioButton = makeWrapTooltip(ig.igRadioButton_IntPtr)	-- TODO instead of _IntPtr, replace with iglua.igRadioButton and do type detect
 
-local function tooltipLabel(label, str)
+function iglua.tooltipText(label, str)
 	ig.igPushID_Str(label)
 	ig.igText(str)
 	iglua.hoverTooltip(label)
@@ -498,8 +498,35 @@ do
 	end
 end
 
--- TODO atypical igInputText since it uses a string
+-- TODO atypical luatableInputText / igInputText since it uses a string, and passes the string size
+local function makeTableAccessString(args)
+	local func = assert(args.func)
+	local buf = ffi.new'char[256]'
+	return function(title, t, k, ...)
+		local src = tostring(t[k])
+		local len = #src
+		while len >= ffi.sizeof(buf) do
+			local newbuf = ffi.new('char[?]', ffi.sizeof(buf) * 2)
+			ffi.copy(newbuf, buf, ffi.sizeof(buf))
+			buf = newbuf
+		end
+		ffi.copy(buf, src, len)
+		buf[len] = 0
+		local result = table.pack(func(title, buf, ffi.sizeof(buf), ...))
+		if result[1] then
+			t[k] = ffi.string(buf, math.min(ffi.sizeof(buf), tonumber(ffi.C.strlen(buf))))
+		end
+		return result:unpack()
+	end
+end
 
+iglua.luatableInputText = makeTableAccessString{
+	func = iglua.igInputText,
+}
+
+iglua.luatableInputTextMultiline = makeTableAccessString{
+	func = iglua.igInputTextMultiline,
+}
 
 -- this is tooltip wrap + table wrap
 iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
