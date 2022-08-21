@@ -340,10 +340,52 @@ end
 
 
 -- HERE IS THE LUA-WRAPPED TYPES
--- API STANDARD, IF THE ig IS MISSING THEN IT IS A TABLE-BASED NAME
--- MAYBE I SHOULD DENOTE THEM SOME OTHER WAY
+-- API STANDARD, IF the prefix is 'luatable' THEN IT IS A TABLE-BASED NAME
+-- API STANDARD, IF the prefix is 'tooltip' THEN IT HAS AN AUTO TOOLTIP (in place of a title) 
+-- API STANDARD, IF the prefix is 'luatableTooltip' THEN IT IS BOTH 
 
--- similar to hydro-cl, but hydro-cl has a tooltip
+
+
+local function hoverTooltip(name)
+	if ig.igIsItemHovered(ig.ImGuiHoveredFlags_None) then
+		ig.igBeginTooltip()
+		ig.igText(name)
+		ig.igEndTooltip()
+	end
+end
+
+local function makeWrapTooltip(f)
+	return function(name, ...)
+		ig.igPushID_Str(name)
+		local result = f('', ...)
+		hoverTooltip(name)
+		ig.igPopID()
+		return result
+	end
+end
+
+
+-- this is just tooltip wrapper, not Lua table wrapper
+local tooltipWidgets = table.map({
+	slider = iglua.igSliderFloat,
+	combo = iglua.igCombo,
+	button = iglua.igButton,
+	float = iglua.igInputFloat,
+	int = iglua.igInputInt,
+	checkbox = iglua.igCheckbox,
+	text = iglua.igInputText,
+}, function(f, wrapName)
+	return makeWrapTooltip(f), wrapName
+end)
+
+
+local function tooltipLabel(label, str)
+	ig.igPushID_Str(label)
+	ig.igText(str)
+	hoverTooltip(label)
+	ig.igPopID()
+end
+
 local function makeTableAccess(ctype, func, allowNull)
 	local ptr = ffi.new(ctype..'[1]')
 	return function(title, t, k, ...)
@@ -376,8 +418,29 @@ local function makeTableAccess(ctype, func, allowNull)
 	end
 end
 
-iglua.Begin = makeTableAccess('bool', ig.igBegin, true)
-iglua.SliderFloat = makeTableAccess('float', iglua.igSliderFloat, false)
+-- this is table wrap only, no tooltip
+iglua.luatableBegin = makeTableAccess('bool', iglua.igBegin, true)
+iglua.luatableSliderFloat = makeTableAccess('float', iglua.igSliderFloat, false)
+iglua.luatableInputFloat = makeTableAccess('float', iglua.igInputFloat, false)
+
+-- this is atypical because I'm 1-offsetting the indexes
+do
+	local int = ffi.new'int[1]'
+	function iglua.luatableCombo(title, t, k, ...)
+		assert(t[k])
+		assert(type(t[k]) == 'number')
+		int[0] = t[k]-1
+		if iglua.igCombo(title, int, ...) then
+			t[k] = int[0]+1
+			return true
+		end
+	end
+end
+
+-- this is tooltip wrap + table wrap
+iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
+iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
+iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
 
 return setmetatable(iglua, {
 	__index = ig,
