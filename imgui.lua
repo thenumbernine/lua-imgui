@@ -6,6 +6,8 @@ local ffi = require 'ffi'
 local ig = require 'ffi.cimgui'
 local table = require 'ext.table'
 
+require 'ffi.c.string'	--strlen
+
 -- ig interface but with lua tables
 local iglua = {}
 
@@ -484,9 +486,9 @@ iglua.luatableInputFloat = makeTableAccess{
 	castto = tonumber,
 }
 --]]
---[[ this uses lua's string-to-float
+-- [[ this uses lua's string-to-float
 -- but is it giving me false-positive returns?
-function iglua.luatableInputFloat(title, t, k, ...)
+function iglua.luatableInputFloatAsText(title, t, k, ...)
 	local tmp = {value = tostring(t[k])}
 	if table.pack(iglua.luatableInputText(title, tmp, 'value', ...)) then
 		local v = tonumber(tmp.value)
