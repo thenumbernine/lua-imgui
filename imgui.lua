@@ -486,8 +486,10 @@ iglua.luatableInputFloat = makeTableAccess{
 	castto = tonumber,
 }
 --]]
--- [[ this uses lua's string-to-float
--- but is it giving me false-positive returns?
+-- [[ This uses lua's string-to-float
+-- Sometimes you pass a small float to igInputFloat and it just renders .000... and nothing else.  This will format properly.  Yeah I know you can override formatting in igInputFloat .
+-- This also handles inputs of 1e+ 1e- correctly.  Can igInputFloat do that?
+-- TODO is it giving me false-positive returns?
 function iglua.luatableInputFloatAsText(title, t, k, ...)
 	local tmp = {value = tostring(t[k])}
 	if table.pack(iglua.luatableInputText(title, tmp, 'value', ...)) then
@@ -550,6 +552,7 @@ iglua.luatableInputTextMultiline = makeTableAccessString{
 -- this is tooltip wrap + table wrap
 iglua.luatableTooltipSliderFloat = makeWrapTooltip(iglua.luatableSliderFloat)
 iglua.luatableTooltipInputFloat = makeWrapTooltip(iglua.luatableInputFloat)
+iglua.luatableTooltipInputFloatAsText = makeWrapTooltip(iglua.luatableInputFloatAsText)
 iglua.luatableTooltipInputInt = makeWrapTooltip(iglua.luatableInputInt)
 iglua.luatableTooltipCombo = makeWrapTooltip(iglua.luatableCombo)
 iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
