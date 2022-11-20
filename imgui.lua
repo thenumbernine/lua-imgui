@@ -489,17 +489,18 @@ iglua.luatableInputFloat = makeTableAccess{
 -- [[ This uses lua's string-to-float
 -- Sometimes you pass a small float to igInputFloat and it just renders .000... and nothing else.  This will format properly.  Yeah I know you can override formatting in igInputFloat .
 -- This also handles inputs of 1e+ 1e- correctly.  Can igInputFloat do that?
--- TODO is it giving me false-positive returns?
+-- notice this will trigger 'return true' for every keypress unless you pass ig.ImGuiInputTextFlags_EnterReturnsTrue as the next arg (in the ...)
 function iglua.luatableInputFloatAsText(title, t, k, ...)
 	local tmp = {value = tostring(t[k])}
-	if table.pack(iglua.luatableInputText(title, tmp, 'value', ...)) then
+	local result = table.pack(iglua.luatableInputText(title, tmp, 'value', ...))
+	if result[1] then
 		local v = tonumber(tmp.value)
 		if v then
 			t[k] = v
-			return true
+			return result:unpack()
 		end
 	end
-	return false
+	return result:unpack()
 end 
 --]]
 
