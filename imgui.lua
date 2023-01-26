@@ -14,10 +14,7 @@ local iglua = {}
 local ImVec2 = ffi.metatype('ImVec2', {})
 iglua.ImVec2 = ImVec2
 local ImVec4 = ffi.metatype('ImVec4', {})
-iglua.ImVec4 = ImVec4 
-
-local tmpbool = ffi.new'bool[1]'
-local tmpfloat = ffi.new'float[1]'
+iglua.ImVec4 = ImVec4
 
 
 
@@ -98,6 +95,7 @@ function iglua.igCombo(...)
 	local n = select('#', ...)
 	local arg3 = select(3, ...)
 	local type3 = type(arg3)
+	local ctype3 = type3 == 'ctype' and tostring(ffi.typeof(arg3))
 	if isptr(select(3, ...), 'char%s*%*') then
 		local label, current_item, items, item_count, height_in_items = ...
 		if n < 5 then height_in_items = -1 end
@@ -343,8 +341,8 @@ end
 
 -- HERE IS THE LUA-WRAPPED TYPES
 -- API STANDARD, IF the prefix is 'luatable' THEN IT IS A TABLE-BASED NAME
--- API STANDARD, IF the prefix is 'tooltip' THEN IT HAS AN AUTO TOOLTIP (in place of a title) 
--- API STANDARD, IF the prefix is 'luatableTooltip' THEN IT IS BOTH 
+-- API STANDARD, IF the prefix is 'tooltip' THEN IT HAS AN AUTO TOOLTIP (in place of a title)
+-- API STANDARD, IF the prefix is 'luatableTooltip' THEN IT IS BOTH
 
 
 
@@ -501,7 +499,7 @@ function iglua.luatableInputFloatAsText(title, t, k, ...)
 		end
 	end
 	return result:unpack()
-end 
+end
 --]]
 
 iglua.luatableInputInt = makeTableAccess{
