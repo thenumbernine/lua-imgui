@@ -11,9 +11,23 @@ require 'ffi.c.string'	--strlen
 -- ig interface but with lua tables
 local iglua = {}
 
-local ImVec2 = ffi.metatype('ImVec2', {})
+local ImVec2 = ffi.metatype('ImVec2', {
+	__tostring = function(self)
+		return '{'..self.x..', '..self.y..'}'
+	end,
+	__concat = function(self, other)
+		return tostring(self) .. tostring(other)
+	end,
+})
 iglua.ImVec2 = ImVec2
-local ImVec4 = ffi.metatype('ImVec4', {})
+local ImVec4 = ffi.metatype('ImVec4', {
+	__tostring = function(self)
+		return '{'..self.x..', '..self.y..', '..self.z..', '..self.w..'}'
+	end,
+	__concat = function(self, other)
+		return tostring(self) .. tostring(other)
+	end,
+})
 iglua.ImVec4 = ImVec4
 
 
