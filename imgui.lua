@@ -588,6 +588,31 @@ iglua.luatableTooltipCheckbox = makeWrapTooltip(iglua.luatableCheckbox)
 iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
 iglua.luatableTooltipInputText = makeWrapTooltip(iglua.luatableInputText)
 
+-- https://github.com/ocornut/imgui/issues/3541
+-- move to lua imgui
+function iglua.fullscreen(cb)
+	local IMGUI_HAS_VIEWPORT = true
+	if IMGUI_HAS_VIEWPORT then
+		local viewport = ig.igGetMainViewport()
+		ig.igSetNextWindowPos(viewport.WorkPos, 0, ImVec2())
+		ig.igSetNextWindowSize(viewport.WorkSize, 0)
+		ig.igSetNextWindowViewport(viewport.ID)
+	else
+		ig.igSetNextWindowPos(ImVec2(0, 18), 0, ImVec2())
+		ig.igSetNextWindowSize(ig.igGetIO().DisplaySize, 0)
+	end
+	ig.igPushStyleVar_Float(ig.ImGuiStyleVar_WindowRounding, 0)
+	ig.igBegin('MainViewport', nil, bit.bor(
+		ig.ImGuiWindowFlags_NoMove,
+		ig.ImGuiWindowFlags_NoResize,
+		ig.ImGuiWindowFlags_NoCollapse,
+		ig.ImGuiWindowFlags_NoDecoration
+	))
+	cb()
+	ig.igEnd()
+	ig.igPopStyleVar(1)
+end
+
 return setmetatable(iglua, {
 	__index = ig,
 })
