@@ -589,7 +589,6 @@ iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
 iglua.luatableTooltipInputText = makeWrapTooltip(iglua.luatableInputText)
 
 -- https://github.com/ocornut/imgui/issues/3541
--- move to lua imgui
 function iglua.fullscreen(cb)
 	local IMGUI_HAS_VIEWPORT = true
 	if IMGUI_HAS_VIEWPORT then
