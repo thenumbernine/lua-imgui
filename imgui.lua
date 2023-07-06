@@ -589,7 +589,8 @@ iglua.luatableTooltipRadioButton = makeWrapTooltip(iglua.luatableRadioButton)
 iglua.luatableTooltipInputText = makeWrapTooltip(iglua.luatableInputText)
 
 -- https://github.com/ocornut/imgui/issues/3541
-function iglua.fullscreen(cb)
+function iglua.fullscreen(cb, ytop)
+	ytop = ytop or 0
 	local IMGUI_HAS_VIEWPORT = true
 	if IMGUI_HAS_VIEWPORT then
 		local viewport = ig.igGetMainViewport()
@@ -597,8 +598,14 @@ function iglua.fullscreen(cb)
 		ig.igSetNextWindowSize(viewport.WorkSize, 0)
 		ig.igSetNextWindowViewport(viewport.ID)
 	else
-		ig.igSetNextWindowPos(ImVec2(0, 18), 0, ImVec2())
-		ig.igSetNextWindowSize(ig.igGetIO().DisplaySize, 0)
+		-- TODO this 18 is to work around browser's url ...
+		-- hmm ...
+		-- how to offset / sub-context / sub-viewport / whatever ...
+		-- maybe just have an arg to override from default of 0?
+		ig.igSetNextWindowPos(ImVec2(0, ytop), 0, ImVec2())
+		local size = ImVec2(ig.igGetIO().DisplaySize)
+		size.y = size.y - ytop
+		ig.igSetNextWindowSize(size, 0)
 	end
 	ig.igPushStyleVar_Float(ig.ImGuiStyleVar_WindowRounding, 0)
 	ig.igBegin('MainViewport', nil, bit.bor(
