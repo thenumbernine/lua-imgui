@@ -132,11 +132,11 @@ function iglua.igCombo(...)
 end
 function iglua.igColorButton(...)
 	local n = select('#', ...)
-	local col, small_height, outline_border = ...
+	local desc, col, flags, size = ...
 	if type(col) == 'table' then col = ImVec4(table.unpack(col,1,4)) end
-	if n < 2 then small_height = false end
-	if n < 3 then outline_border = true end
-	return ig.igColorButton(col, small_height, outline_border)
+	if n < 3 then flags = 0 end
+	if n < 4 then size = ImVec2(16,16) end
+	return ig.igColorButton(desc, col, flags, size)
 end
 function iglua.igInputFloat(...)
 	local n = select('#', ...)
