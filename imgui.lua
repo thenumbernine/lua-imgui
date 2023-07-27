@@ -296,57 +296,57 @@ function iglua.igSetScrollFromPosY(...)
 end
 function iglua.igSliderFloat(...)
 	local n = select('#', ...)
-	local label, v, v_min, v_max, display_format, power = ...
-	if n < 4 then display_format = '%.3f' end
-	if n < 5 then power = 1 end
-	return ig.igSliderFloat(label, v, v_min, v_max, display_format, power)
+	local label, v, v_min, v_max, display_format, flags = ...
+	if n < 5 then display_format = '%.3f' end
+	if n < 6 then flags = 0 end
+	return ig.igSliderFloat(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderFloat2(...)
 	local n = select('#', ...)
-	local label, v, v_min, v_max, display_format, power = ...
-	if n < 4 then display_format = '%.3f' end
-	if n < 5 then power = 1 end
-	return ig.igSliderFloat2(label, v, v_min, v_max, display_format, power)
+	local label, v, v_min, v_max, display_format, flags = ...
+	if n < 5 then display_format = '%.3f' end
+	if n < 6 then flags = 0 end
+	return ig.igSliderFloat2(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderFloat3(...)
 	local n = select('#', ...)
-	local label, v, v_min, v_max, display_format, power = ...
-	if n < 4 then display_format = '%.3f' end
-	if n < 5 then power = 1 end
-	return ig.igSliderFloat3(label, v, v_min, v_max, display_format, power)
+	local label, v, v_min, v_max, display_format, flags = ...
+	if n < 5 then display_format = '%.3f' end
+	if n < 6 then flags = 0 end
+	return ig.igSliderFloat3(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderFloat4(...)
 	local n = select('#', ...)
-	local label, v, v_min, v_max, display_format, power = ...
-	if n < 4 then display_format = '%.3f' end
-	if n < 5 then power = 1 end
-	return ig.igSliderFloat4(label, v, v_min, v_max, display_format, power)
+	local label, v, v_min, v_max, display_format, flags = ...
+	if n < 5 then display_format = '%.3f' end
+	if n < 6 then flags = 0 end
+	return ig.igSliderFloat4(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderInt(...)
 	local n = select('#', ...)
 	local label, v, v_min, v_max, display_format, flags = ...
-	if n < 5 then display_format = '%.0f' end
+	if n < 5 then display_format = '%d' end
 	if n < 6 then flags = 0 end
 	return ig.igSliderInt(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderInt2(...)
 	local n = select('#', ...)
 	local label, v, v_min, v_max, display_format, flags = ...
-	if n < 5 then display_format = '%.0f' end
+	if n < 5 then display_format = '%d' end
 	if n < 6 then flags = 0 end
 	return ig.igSliderInt2(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderInt3(...)
 	local n = select('#', ...)
 	local label, v, v_min, v_max, display_format, flags = ...
-	if n < 5 then display_format = '%.0f' end
+	if n < 5 then display_format = '%d' end
 	if n < 6 then flags = 0 end
 	return ig.igSliderInt3(label, v, v_min, v_max, display_format, flags)
 end
 function iglua.igSliderInt4(...)
 	local n = select('#', ...)
 	local label, v, v_min, v_max, display_format, flags = ...
-	if n < 5 then display_format = '%.0f' end
+	if n < 5 then display_format = '%d' end
 	if n < 6 then flags = 0 end
 	return ig.igSliderInt4(label, v, v_min, v_max, display_format, flags)
 end
