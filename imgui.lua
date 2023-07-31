@@ -3,10 +3,10 @@ TODO move this into ffi.imgui because I'm using it so much
 same as the non-C part of my lua-ffi-bindings, same as hydro-cl/hydro/toolkit
 --]]
 local ffi = require 'ffi'
-local ig = require 'ffi.cimgui'
+local ig = require 'ffi.req' 'cimgui'
 local table = require 'ext.table'
 
-require 'ffi.c.string'	--strlen
+require 'ffi.req' 'c.string'	--strlen
 
 -- ig interface but with lua tables
 local iglua = {}
