@@ -12,7 +12,29 @@ Dependencies:
 - [lua-ffi-bindings](https://github.com/thenumbernine/lua-ffi-bindings)
 - [cimgui](https://github.com/cimgui/cimgui)
 
-I'm currently using the cimgui v1.87dock API.
+I'm currently using the cimgui v1.89.7dock API.
 
-Build this with its `backends/imgui_impl_sdl.cpp` and `backends/imgui_impl_opengl2.cpp` added to the project.
-Also for Linux, sure to set in the cimgui Makefile: `CXXFLAGS += "-DIMGUI_IMPL_API=extern \"C\""`
+## cimgui build instructions:
+
+```
+git clone https://github.com/cimgui/cimgui
+cd cimgui
+git checkout tags/1.89.7dock
+git submodule update --init --recursive
+
+# now change the Makefile in cimgui:
+# apply these changes to the Makefile in the cimgui base folder:
+	OBJS += ./imgui/backends/imgui_impl_sdl2.o
+	OBJS += ./imgui/backends/imgui_impl_opengl3.o
+	CXXFLAGS += -DIMGUI_IMPL_API=extern\ \"C\"
+	CXXFLAGS += -Iwherever/you/put/the/SDL2/include
+	# make sure loading cimgui loads SDL2 as well.
+	# I could also put this as a ffi.load somewhere in the ffi/cimgui.lua file but meh.
+	CXXFLAGS += /usr/lib/arm-linux-gnueabihf/libSDL2-2.0.so.0
+	OUTPUTNAME = libcimgui_sdl.so
+
+# then build:
+make all
+
+# then install libcimgui_sdl.so somewhere where your OS or applications will find libraries.
+```
