@@ -28,9 +28,7 @@ git submodule update --init --recursive
 	OBJS += ./imgui/backends/imgui_impl_opengl3.o
 	CXXFLAGS += -DIMGUI_IMPL_API=extern\ \"C\"
 	CXXFLAGS += -Iwherever/you/put/the/SDL2/include
-	# make sure loading cimgui loads SDL2 as well.
-	# I could also put this as a ffi.load somewhere in the ffi/cimgui.lua file but meh.
-	CXXFLAGS += /usr/lib/arm-linux-gnueabihf/libSDL2-2.0.so.0
+	CXXFLAGS += -lSDL2
 	OUTPUTNAME = libcimgui_sdl.so
 
 # then build:
