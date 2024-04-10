@@ -226,13 +226,12 @@ function iglua.igImage(...)
 end
 function iglua.igImageButton(...)
 	local n = select('#', ...)
-	local user_texture_id, size, uv0, uv1, frame_padding, bg_col, tint_col = ...
+	local user_texture_id, size, uv0, uv1, bg_col, tint_col = ...
 	if n < 3 then uv0 = ImVec2(0,0) end
 	if n < 4 then uv1 = ImVec2(1,1) end
-	if n < 5 then frame_padding = -1 end
-	if n < 6 then bg_col = ImVec4(0,0,0,0) end
-	if n < 7 then tint_col = ImVec4(1,1,1,1) end
-	return ig.igImageButton(user_texture_id, size, uv0, uv1, frame_padding, bg_col, tint_col)
+	if n < 5 then bg_col = ImVec4(0,0,0,0) end
+	if n < 6 then tint_col = ImVec4(1,1,1,1) end
+	return ig.igImageButton(user_texture_id, size, uv0, uv1, bg_col, tint_col)
 end
 function iglua.igInputText(...)
 	local n = select('#', ...)
