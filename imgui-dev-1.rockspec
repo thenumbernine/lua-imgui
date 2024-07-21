@@ -1,7 +1,7 @@
 package = "imgui"
 version = "dev-1"
 source = {
-	url = "git+https://github.com/thenumbernine/lua-imgui"
+	url = "git+https://github.com/thenumbernine/lua-imgui.git"
 }
 description = {
 	summary = "LuaJIT C-ImGui Wrapper",
