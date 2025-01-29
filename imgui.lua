@@ -438,7 +438,13 @@ local function makeTableAccess(args)
 			end
 			ptr[0] = castto(t[k])
 			local result = table.pack(func(title, ptr, ...))
-			t[k] = castfrom(ptr[0])
+
+			-- should this write always?  or only when the imgui function returns true?
+			-- 'always' will result in truncations of double to float
+			if result[1] then
+				t[k] = castfrom(ptr[0])
+			end
+
 			return result:unpack()
 		end
 	end
