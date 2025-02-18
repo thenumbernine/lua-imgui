@@ -581,6 +581,18 @@ do
 		v[3] = float3[2]
 		return result:unpack()
 	end
+
+	function iglua.luatableColorPicker3(label, t, k, ...)	-- doesn't really need t[k], just v
+		local v = t[k]
+		float3[0] = v[1]
+		float3[1] = v[2]
+		float3[2] = v[3]
+		local result = table.pack(iglua.igColorPicker3(label, float3, ...))
+		v[1] = float3[0]
+		v[2] = float3[1]
+		v[3] = float3[2]
+		return result:unpack()
+	end
 end
 
 -- this is tooltip wrap + table wrap
