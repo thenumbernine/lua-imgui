@@ -1,6 +1,6 @@
 [![Donate via Stripe](https://img.shields.io/badge/Donate-Stripe-green.svg)](https://buy.stripe.com/00gbJZ0OdcNs9zi288)<br>
 
-## LuaJIT C-ImGui Wrapper
+# LuaJIT C-ImGui Wrapper
 
 This holds some C++-overloaded-operator API wrappers of the cimgui LuaJIT function calls.
 It also holds some lua-table-to-C-pointer wrappers.
@@ -35,3 +35,15 @@ make all
 
 # then install libcimgui_sdl.so somewhere where your OS or applications will find libraries.
 ```
+
+# LuaJIT ImGui GLApp wrapper:
+
+Also included is a subclass of GLApp that uses ImGui.
+
+### Dependencies:
+
+- [lua-ext](https://github.com/thenumbernine/lua-ext)
+- [lua-gl](https://github.com/thenumbernine/lua-gl)
+- [lua-glapp](https://github.com/thenumbernine/lua-glapp)
+- [lua-imgui](https://github.com/thenumbernine/lua-imgui)
+- [lua-ffi-bindings](https://github.com/thenumbernine/lua-ffi-bindings)
