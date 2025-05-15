@@ -4,7 +4,7 @@
 --  Trying to use custon fonts.
 -- seems FontAtlas->Build() alone doesn't work, you gotta copy from ImGui the font tex data, make a GL tex out of it, then re-assign the GL tex back to ImGUi
 
-local ImGuiApp = require 'imguiapp'
+local ImGuiApp = require 'imgui.app'
 local ffi = require 'ffi'
 local ig = require 'imgui'
 local gl = require 'gl'

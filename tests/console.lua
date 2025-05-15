@@ -8,7 +8,7 @@ local env = setmetatable({}, {__index=_G})
 if setfenv then setfenv(1,env) else _ENV = env end
 
 env.env = env
-App = require 'imguiapp.withorbit'()
+App = require 'imgui.appwithorbit'()
 App.title = 'Console Test'
 
 function App:initGL(...)

@@ -1,7 +1,7 @@
 #!/usr/bin/env luajit
 local gl = require 'gl'
 local ig = require 'imgui'
-local ImGuiApp = require 'imguiapp'
+local ImGuiApp = require 'imgui.app'
 
 local TestApp = ImGuiApp:subclass()
 
