@@ -1,0 +1,17 @@
+name = "imgui"
+files = {
+	["README.md"] = "imgui/README.md",
+	["app.lua"] = "imgui/app.lua",
+	["appwithorbit.lua"] = "imgui/appwithorbit.lua",
+	["imgui-dev-1.rockspec"] = "imgui/imgui-dev-1.rockspec",
+	["imgui.lua"] = "imgui/imgui.lua",
+	["tests/console.lua"] = "imgui/tests/console.lua",
+	["tests/demo.lua"] = "imgui/tests/demo.lua",
+	["tests/font.lua"] = "imgui/tests/font.lua",
+}
+deps = {
+	"ext",
+	"ffi",
+	"gl",
+	"glapp",
+}
