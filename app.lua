@@ -4,16 +4,20 @@ local gl = require 'gl'
 
 local ImGuiApp = GLApp:subclass()
 
+local loaded2 = package.loaded['sdl.app2']
+local loaded3 = package.loaded['sdl.app3']
+local SDL = loaded2 and 'SDL2' or loaded3 and 'SDL3' or error("I can't tell your SDL version")
+
 function ImGuiApp:initGL()
 	self.imguiCtx = ig.igCreateContext(nil)
-    ig.ImGui_ImplSDL2_InitForOpenGL(self.window, self.sdlCtx)
+    ig['ImGui_Impl'..SDL..'_InitForOpenGL'](self.window, self.sdlCtx)
     ig.ImGui_ImplOpenGL3_Init(self.glslVersion)	-- nil => null => default
 	ig.igStyleColorsDark(nil)
 end
 
 function ImGuiApp:exit()
     ig.ImGui_ImplOpenGL3_Shutdown()
-    ig.ImGui_ImplSDL2_Shutdown()
+    ig['ImGui_Impl'..SDL..'_Shutdown']()
     ig.igDestroyContext(self.imguiCtx)
 
 	ImGuiApp.super.exit(self)
@@ -21,12 +25,12 @@ end
 
 function ImGuiApp:event(eventPtr)
 	assert(eventPtr, "forgot to pass the eventPtr")
-	ig.ImGui_ImplSDL2_ProcessEvent(eventPtr)
+	ig['ImGui_Impl'..SDL..'_ProcessEvent'](eventPtr)
 end
 
 function ImGuiApp:update()
     ig.ImGui_ImplOpenGL3_NewFrame()
-    ig.ImGui_ImplSDL2_NewFrame()
+    ig['ImGui_Impl'..SDL..'_NewFrame']()
     ig.igNewFrame()
 
 	self:updateGUI()
