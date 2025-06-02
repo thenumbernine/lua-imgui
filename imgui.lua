@@ -217,12 +217,19 @@ iglua.igGetWindowSize = (function()
 end)()
 function iglua.igImage(...)
 	local n = select('#', ...)
+	local user_texture_id, size, uv0, uv1 = ...
+	if n < 3 then uv0 = ImVec2(0,0) end
+	if n < 4 then uv1 = ImVec2(1,1) end
+	return ig.igImage(user_texture_id, size, uv0, uv1)
+end
+function iglua.igImageWithBg(...)
+	local n = select('#', ...)
 	local user_texture_id, size, uv0, uv1, tint_col, border_col = ...
 	if n < 3 then uv0 = ImVec2(0,0) end
 	if n < 4 then uv1 = ImVec2(1,1) end
 	if n < 5 then tint_col = ImVec4(1,1,1,1) end
 	if n < 6 then border_col = ImVec4(0,0,0,0) end
-	return ig.igImage(user_texture_id, size, uv0, uv1, tint_col, border_col)
+	return ig.igImageWithBg(user_texture_id, size, uv0, uv1, tint_col, border_col)
 end
 function iglua.igImageButton(...)
 	local n = select('#', ...)
