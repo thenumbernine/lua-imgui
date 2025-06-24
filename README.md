@@ -11,14 +11,14 @@ Dependencies:
 - [lua-ffi-bindings](https://github.com/thenumbernine/lua-ffi-bindings)
 - [cimgui](https://github.com/cimgui/cimgui)
 
-I'm currently using the cimgui v1.90.5dock API.
+I'm currently using the cimgui v1.91.9dock API.
 
 ## cimgui build instructions:
 
 ```
 git clone https://github.com/cimgui/cimgui
 cd cimgui
-git checkout tags/1.90.5dock
+git checkout tags/1.91.9dock
 git submodule update --init --recursive
 
 # now change the Makefile in cimgui:
