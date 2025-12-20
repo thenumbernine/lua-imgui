@@ -5,6 +5,7 @@ same as the non-C part of my lua-ffi-bindings, same as hydro-cl/hydro/toolkit
 local ffi = require 'ffi'
 local ig = require 'imgui.lib'
 local table = require 'ext.table'
+local assert = require 'ext.assert'
 
 require 'ffi.req' 'c.string'	--strlen
 
@@ -415,8 +416,8 @@ args:
 	castfrom = function for casting from the ctype
 --]]
 local function makeTableAccess(args)
-	local ctype = assert(args.ctype, "expected ctype")
-	local func = assert(args.func, "expected func")
+	local ctype = assert.index(args, 'ctype')
+	local func = assert.index(args, 'func')
 	local allowNull = args.allowNull
 	local castto = args.castto or ident
 	local castfrom = args.castfrom or ident
@@ -459,7 +460,7 @@ end
 
 -- atypical luatableInputText / igInputText since it uses a string, and passes the string size
 local function makeTableAccessString(args)
-	local func = assert(args.func)
+	local func = assert.index(args, 'func')
 	local buf = ffi.new'char[256]'
 	return function(title, t, k, ...)
 		local src = tostring(t[k])
@@ -543,8 +544,7 @@ iglua.luatableRadioButton = makeTableAccess{
 do
 	local int = ffi.new'int[1]'
 	function iglua.luatableCombo(title, t, k, ...)
-		assert(t[k])
-		assert(type(t[k]) == 'number')
+		assert.type(assert.index(t, k), 'number')
 		int[0] = t[k]-1
 		if iglua.igCombo(title, int, ...) then
 			t[k] = int[0]+1
@@ -557,8 +557,8 @@ end
 do
 	local bool = ffi.new'bool[1]'
 	function iglua.luatableMenuItem(label, shortcut, t, k, ...)
-		assert(t ~= nil)
-		assert(t[k] ~= nil)
+		assert.ne(t, nil)
+		assert.ne(t[k], nil)
 		bool[0] = t[k]
 		local result = table.pack(iglua.igMenuItem(label, shortcut, bool, ...))
 		t[k] = bool[0]
