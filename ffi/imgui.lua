@@ -8,7 +8,7 @@ require 'ffi.req' 'c.stdio'
 require 'ffi.req' 'c.stdint'
 require 'ffi.req' 'c.stdarg'
 require 'ffi.req' 'c.stdbool'
-require 'sdl'	-- usd the SDL repo so that it can determine (/ detect?) what SDL version to use
+require 'sdl'	-- use the SDL repo so that it can determine (/ detect?) what SDL version to use
 
 ffi.cdef[[
 
@@ -3437,15 +3437,20 @@ struct ImFontBuilderIO
 	_Bool (*FontBuilder_Build)(ImFontAtlas* atlas);
 };
 ]]
-local wrapper
-wrapper = require 'ffi.libwrapper'{
+
+return require 'ffi.libwrapper'{
 	lib = require 'ffi.load' 'cimgui_sdl3',
-	defs = {
+	init = {
+
 		-- enums
 
 		CIMGUI_INCLUDED = 1,
 		IM_UNICODE_CODEPOINT_MAX = 0xffff,
 		IMGUI_HAS_DOCK = 1,
+
+		version = '1.91.9dock',	-- my addition, not in the headers.  sad that it's not.
+	},
+	defs = {
 
 		-- functions
 
@@ -4934,7 +4939,3 @@ wrapper = require 'ffi.libwrapper'{
 		ImGui_ImplOpenGL3_DestroyDeviceObjects = [[void ImGui_ImplOpenGL3_DestroyDeviceObjects();]],
 	},
 }
-
-wrapper.version = '1.91.9dock'	-- my addition, not in the headers.  sad that it's not.
-
-return wrapper

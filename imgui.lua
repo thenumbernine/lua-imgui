@@ -3,7 +3,7 @@ TODO move this into ffi.imgui because I'm using it so much
 same as the non-C part of my lua-ffi-bindings, same as hydro-cl/hydro/toolkit
 --]]
 local ffi = require 'ffi'
-local ig = require 'imgui.lib'
+local ig = require 'imgui.ffi.imgui'
 local table = require 'ext.table'
 local assert = require 'ext.assert'
 
