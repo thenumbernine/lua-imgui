@@ -9,6 +9,11 @@ files = {
 	["tests/console.lua"] = "imgui/tests/console.lua",
 	["tests/demo.lua"] = "imgui/tests/demo.lua",
 	["tests/font.lua"] = "imgui/tests/font.lua",
+	["bin/Linux/x64/libcimgui_sdl2.so"] = "imgui/bin/Linux/x64/libcimgui_sdl2.so",
+	["bin/Linux/x64/libcimgui_sdl3.so"] = "imgui/bin/Linux/x64/libcimgui_sdl3.so",
+	["bin/OSX/x64/libcimgui_sdl.dylib"] = "imgui/bin/OSX/x64/libcimgui_sdl.dylib",
+	["bin/Windows/x64/cimgui_sdl2.dll"] = "imgui/bin/Windows/x64/cimgui_sdl2.dll",
+	["bin/Windows/x64/cimgui_sdl3.dll"] = "imgui/bin/Windows/x64/cimgui_sdl3.dll",
 }
 deps = {
 	"ext",
@@ -53,6 +58,7 @@ generateBindings = {
 			'CIMGUI_DEFINE_ENUMS_AND_STRUCTS',
 		},
 		final = function(code)
+			local safegsub = require 'include.util'.safegsub
 			-- this is already in SDL
 			code = safegsub(code,
 				string.patescape'struct SDL_Window;'..'\n'
