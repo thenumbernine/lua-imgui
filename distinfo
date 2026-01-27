@@ -22,7 +22,7 @@ deps = {
 	"glapp",
 }
 
-generateBindings = {
+generateBindings = function()return{
 
 	-- depends on: stdio.h stdint.h stdarg.h stdbool.h
 	{
@@ -83,4 +83,4 @@ return require 'ffi.load' 'cimgui_sdl'
 			return code
 		end,
 	},
-}
+}end
