@@ -1,25 +1,36 @@
+--------------------------------------------
+-- generated with dist/build-distinfo.rua --
+--------------------------------------------
+
 name = "imgui"
 files = {
 	["README.md"] = "imgui/README.md",
 	["app.lua"] = "imgui/app.lua",
 	["appwithorbit.lua"] = "imgui/appwithorbit.lua",
+	["distinfo"] = "imgui/distinfo",
+	["ffi/imgui.lua"] = "imgui/ffi/imgui.lua",
 	["imgui-dev-1.rockspec"] = "imgui/imgui-dev-1.rockspec",
 	["imgui.lua"] = "imgui/imgui.lua",
-	["lib.lua"] = "imgui/lib.lua",
 	["tests/console.lua"] = "imgui/tests/console.lua",
 	["tests/demo.lua"] = "imgui/tests/demo.lua",
 	["tests/font.lua"] = "imgui/tests/font.lua",
+}
+
+-- TODO separate per OS for dist packaging only
+files_bin = {
 	["bin/Linux/x64/libcimgui_sdl2.so"] = "imgui/bin/Linux/x64/libcimgui_sdl2.so",
 	["bin/Linux/x64/libcimgui_sdl3.so"] = "imgui/bin/Linux/x64/libcimgui_sdl3.so",
 	["bin/OSX/x64/libcimgui_sdl.dylib"] = "imgui/bin/OSX/x64/libcimgui_sdl.dylib",
 	["bin/Windows/x64/cimgui_sdl2.dll"] = "imgui/bin/Windows/x64/cimgui_sdl2.dll",
 	["bin/Windows/x64/cimgui_sdl3.dll"] = "imgui/bin/Windows/x64/cimgui_sdl3.dll",
 }
+
 deps = {
 	"ext",
 	"ffi",
 	"gl",
 	"glapp",
+	"sdl",
 }
 
 generateBindings = function()return{
