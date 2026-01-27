@@ -8,9 +8,7 @@ And for kicks it has some wrappers for showing the text as a hover label instead
 
 I'm currently using the cimgui v1.91.9dock API.
 
-
-### See it in Browser
--	[[launch]](https://thenumbernine.github.io/glapp/?file=demo.lua&dir=%2Fimgui%2Ftests)
+### [See it in Browser](https://thenumbernine.github.io/glapp/?file=demo.lua&dir=%2Fimgui%2Ftests)
 
 ## cimgui build instructions:
 
