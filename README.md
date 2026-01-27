@@ -6,12 +6,11 @@ This holds some C++-overloaded-operator API wrappers of the cimgui LuaJIT functi
 It also holds some lua-table-to-C-pointer wrappers.
 And for kicks it has some wrappers for showing the text as a hover label instead of next to the widget.
 
-Dependencies:
-- [lua-ext](https://github.com/thenumbernine/lua-ext)
-- [lua-ffi-bindings](https://github.com/thenumbernine/lua-ffi-bindings)
-- [cimgui](https://github.com/cimgui/cimgui)
-
 I'm currently using the cimgui v1.91.9dock API.
+
+
+### See it in Browser
+-	[[launch]](https://thenumbernine.github.io/glapp/?file=demo.lua&dir=%2Fimgui%2Ftests)
 
 ## cimgui build instructions:
 
@@ -42,6 +41,7 @@ Also included is a subclass of GLApp that uses ImGui.
 
 ### Dependencies:
 
+- [cimgui](https://github.com/cimgui/cimgui)
 - [lua-ext](https://github.com/thenumbernine/lua-ext)
 - [lua-gl](https://github.com/thenumbernine/lua-gl)
 - [lua-glapp](https://github.com/thenumbernine/lua-glapp)
