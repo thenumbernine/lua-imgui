@@ -20,17 +20,17 @@ git submodule update --init --recursive
 
 # now change the Makefile in cimgui:
 # apply these changes to the Makefile in the cimgui base folder:
-	OBJS += ./imgui/backends/imgui_impl_sdl2.o
+	OBJS += ./imgui/backends/imgui_impl_sdl3.o
 	OBJS += ./imgui/backends/imgui_impl_opengl3.o
 	CXXFLAGS += -DIMGUI_IMPL_API=extern\ \"C\"
-	CXXFLAGS += -Iwherever/you/put/the/SDL2/include
-	CXXFLAGS += -lSDL2
-	OUTPUTNAME = libcimgui_sdl.so
+	CXXFLAGS += -Iwherever/you/put/the/SDL3/include
+	CXXFLAGS += -lSDL3
+	OUTPUTNAME = libcimgui_sdl3.so
 
 # then build:
 make all
 
-# then install libcimgui_sdl.so somewhere where your OS or applications will find libraries.
+# then install libcimgui_sdl3.so somewhere where your OS or applications will find libraries.
 ```
 
 # LuaJIT ImGui GLApp wrapper:
@@ -41,7 +41,7 @@ Also included is a subclass of GLApp that uses ImGui.
 
 - [cimgui](https://github.com/cimgui/cimgui)
 - [lua-ext](https://github.com/thenumbernine/lua-ext)
-- [lua-gl](https://github.com/thenumbernine/lua-gl)
-- [lua-glapp](https://github.com/thenumbernine/lua-glapp)
-- [lua-imgui](https://github.com/thenumbernine/lua-imgui)
 - [lua-ffi-bindings](https://github.com/thenumbernine/lua-ffi-bindings)
+- [lua-gl](https://github.com/thenumbernine/lua-gl)
+- [lua-sdl](https://github.com/thenumbernine/lua-sdl)
+- [lua-glapp](https://github.com/thenumbernine/lua-glapp)
