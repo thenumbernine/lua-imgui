@@ -1,4 +1,4 @@
-local GLApp = require 'glapp'
+local GLApp = require 'gl.app'
 local ig = require 'imgui'
 local gl = require 'gl'
 
