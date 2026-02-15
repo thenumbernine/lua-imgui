@@ -15,7 +15,7 @@ files = {
 	"tests/demo.lua",
 	"tests/font.lua",
 }
-if fif.os == "Android" and ffi.arch == "arm" then
+if ffi.os == "Android" and ffi.arch == "arm" then
 	table.append(files, {
 		"bin/Android/arm/libcimgui_sdl3.so",
 	})
