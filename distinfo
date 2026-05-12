@@ -3,6 +3,8 @@
 --------------------------------------------
 
 name = "imgui"
+git = "https://github.com/thenumbernine/lua-imgui"
+
 files = {
 	"README.md",
 	"app.lua",
