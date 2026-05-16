@@ -22,6 +22,11 @@ if targetOS == "Android" and targetArch == "arm" then
 		"bin/Android/arm/libcimgui_sdl3.so",
 	})
 end
+if targetOS == "Android" and targetArch == "arm64" then
+	table.append(files, {
+		"bin/Android/arm64/libcimgui_sdl3.so",
+	})
+end
 if targetOS == "Linux" and targetArch == "x64" then
 	table.append(files, {
 		"bin/Linux/x64/libcimgui_sdl2.so",
